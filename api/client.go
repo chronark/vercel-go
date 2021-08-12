@@ -1,4 +1,4 @@
-package http
+package api
 
 import (
 	"bytes"
@@ -8,13 +8,17 @@ import (
 	"net/http"
 )
 
-type Client interface {
+type HTTPClient interface {
+	Do(req *http.Request) (*http.Response, error)
+}
+
+type VercelClient interface {
 	Call(method string, path string, body interface{}) (*http.Response, error)
 }
 
-type client struct {
+type vercelClient struct {
 	url        string
-	httpClient *http.Client
+	httpClient HTTPClient
 	userAgent  string
 	token      string
 }
@@ -27,15 +31,23 @@ type NewClientConfig struct {
 	// Optionally set a userAgent that is sent with every request.
 	// Defaults to `chronark/vercel-go`
 	UserAgent string
+
+	// Use a custom HTTPClient.
+	// This is mainly used for testing
+	// Omit to use the default `net/http` implementation
+	HTTPClient HTTPClient
 }
 
-func New(config NewClientConfig) Client {
+func New(config NewClientConfig) VercelClient {
 	if config.UserAgent == "" {
 		config.UserAgent = "chronark/vercel-go"
 	}
-	return &client{
+	if config.HTTPClient == nil {
+		config.HTTPClient = &http.Client{}
+	}
+	return &vercelClient{
 		url:        "https://api.vercel.com",
-		httpClient: &http.Client{},
+		httpClient: config.HTTPClient,
 		userAgent:  config.UserAgent,
 		token:      config.Token,
 	}
@@ -55,7 +67,7 @@ func marshalBody(body interface{}) (io.Reader, error) {
 }
 
 // Perform a request and return its response
-func (c *client) Call(method string, path string, body interface{}) (*http.Response, error) {
+func (c *vercelClient) Call(method string, path string, body interface{}) (*http.Response, error) {
 	payload, err := marshalBody(body)
 	if err != nil {
 		return nil, fmt.Errorf("Unable to marshal request body: %w", err)
