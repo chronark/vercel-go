@@ -1,5 +1,6 @@
 # Vercel Go Client
 
+[![codecov](https://codecov.io/gh/chronark/vercel-go/branch/main/graph/badge.svg?token=GYF8ON46AV)](https://codecov.io/gh/chronark/vercel-go)
 
 This client implements the latest endpoints from the [vercel api](https://vercel.com/docs/api)
 
