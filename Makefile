@@ -13,5 +13,7 @@ release:
 	@go get github.com/caarlos0/svu
 	@echo "Releasing $$(svu next)..."
 	
-	@git tag $$(svu next) && git push --tags
-	@echo "Done"
+	git tag $$(svu next)
+	
+	npx release-it	
+
