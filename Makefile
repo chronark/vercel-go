@@ -10,10 +10,5 @@ fmt:
 
 
 release:
-	@go get github.com/caarlos0/svu
-	@echo "Releasing $$(svu next)..."
-	
-	git tag $$(svu next)
-	
 	npx release-it	
 
