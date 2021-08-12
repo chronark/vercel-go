@@ -13,7 +13,7 @@ type HTTPClient interface {
 }
 
 type VercelClient interface {
-	Call(method string, path string, body interface{}) (*http.Response, error)
+	Call(method string, path string, requestBody interface{}, responseTarget interface{}) error
 }
 
 type vercelClient struct {
@@ -67,7 +67,7 @@ func marshalBody(body interface{}) (io.Reader, error) {
 }
 
 // Perform a request and return its response
-func (c *vercelClient) Call(method string, path string, body interface{}) (*http.Response, error) {
+func (c *vercelClient) request(method string, path string, body interface{}) (*http.Response, error) {
 	payload, err := marshalBody(body)
 	if err != nil {
 		return nil, fmt.Errorf("Unable to marshal request body: %w", err)
@@ -103,4 +103,19 @@ func (c *vercelClient) Call(method string, path string, body interface{}) (*http
 
 	return res, nil
 
+}
+
+// Call the Vercel API and unmarshal its response directly
+func (c *vercelClient) Call(method string, path string, requestBody interface{}, responseTarget interface{}) error {
+	httpResponse, err := c.request(method, path, requestBody)
+	if err != nil {
+		return err
+	}
+	defer httpResponse.Body.Close()
+
+	err = json.NewDecoder(httpResponse.Body).Decode(responseTarget)
+	if err != nil {
+		return fmt.Errorf("Unable to unmarshal response: %w", err)
+	}
+	return nil
 }

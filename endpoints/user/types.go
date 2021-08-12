@@ -1,5 +1,8 @@
 package user
 
+type UserResponse struct {
+	User User `json:"user"`
+}
 type User struct {
 	UID             string `json:"uid"`
 	Email           string `json:"email"`

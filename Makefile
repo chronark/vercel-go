@@ -12,3 +12,6 @@ fmt:
 release:
 	npx release-it	
 
+
+precommit: fmt
+	go build .

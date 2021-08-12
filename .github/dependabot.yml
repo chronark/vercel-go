@@ -1,9 +1,17 @@
 version: 2
 updates:
+  # Maintain dependencies for GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      # Check for updates to GitHub Actions every weekday
+      interval: "daily"
+    open-pull-requests-limit: 1
+
+  # Maintain dependencies for Go modules
   - package-ecosystem: "gomod"
     directory: "/"
     schedule:
+      # Check for updates to Go modules every weekday
       interval: "daily"
-    assignees:
-      - chronark
     open-pull-requests-limit: 1

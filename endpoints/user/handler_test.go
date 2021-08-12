@@ -21,10 +21,10 @@ func TestGetUser(t *testing.T) {
 	}
 	handler := user.New(api.New(api.NewClientConfig{Token: token}))
 
-	user, err := handler.Get()
+	res, err := handler.Get()
 
 	require.NoError(t, err)
-	require.True(t, len(user.Username) > 0)
+	require.True(t, len(res.User.Username) > 0)
 }
 
 func TestGetUserWithoutToken(t *testing.T) {
