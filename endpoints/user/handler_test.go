@@ -60,5 +60,4 @@ func TestGetUserWithResponse400(t *testing.T) {
 
 	require.Error(t, err)
 
-	
 }
