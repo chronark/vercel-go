@@ -24,7 +24,7 @@ func TestGetUser(t *testing.T) {
 	user, err := handler.Get()
 
 	require.NoError(t, err)
-	require.Equal(t, "chronark", user.Username)
+	require.True(t, len(user.Username) > 0)
 }
 
 func TestGetUserWithoutToken(t *testing.T) {
@@ -59,4 +59,5 @@ func TestGetUserWithResponse400(t *testing.T) {
 	_, err := handler.Get()
 
 	require.Error(t, err)
+
 }

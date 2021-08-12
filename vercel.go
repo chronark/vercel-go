@@ -1,8 +1,8 @@
 package vercel
 
 import (
-	"github.com/chronark/vercel-go/endpoints/user"
 	"github.com/chronark/vercel-go/api"
+	"github.com/chronark/vercel-go/endpoints/user"
 )
 
 type Client struct {
