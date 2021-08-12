@@ -59,4 +59,6 @@ func TestGetUserWithResponse400(t *testing.T) {
 	_, err := handler.Get()
 
 	require.Error(t, err)
+
+	
 }
