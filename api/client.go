@@ -91,8 +91,12 @@ func (c *vercelClient) Call(method string, path string, body interface{}) (*http
 		if err != nil {
 			return nil, fmt.Errorf("Unable to decode response body of bad response: %s: %w", res.Status, err)
 		}
+		pretty, err := json.MarshalIndent(responseBody,  "", "  ")
+		if err != nil {
+			return nil, fmt.Errorf("Response returned status code %d: %+v", res.StatusCode, responseBody)
+		}
 
-		return nil, fmt.Errorf("Response returned status code %d: %+v", res.StatusCode, responseBody)
+		return nil, fmt.Errorf("Response returned status code %d: %+v", res.StatusCode, string(pretty))
 	}
 
 	return res, nil
