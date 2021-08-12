@@ -96,9 +96,9 @@ func (c *vercelClient) request(method string, path string, body interface{}) (*h
 		// If that is not possible we return the raw body
 		pretty, err := json.MarshalIndent(responseBody, "", "  ")
 		if err != nil {
-			return nil, fmt.Errorf("Response returned status code %d: %+v", res.StatusCode, responseBody)
+			return nil, fmt.Errorf("Response returned status code %d: %+v, path: %s", res.StatusCode, responseBody, path)
 		}
-		return nil, fmt.Errorf("Response returned status code %d: %+v", res.StatusCode, string(pretty))
+		return nil, fmt.Errorf("Response returned status code %d: %+v, path: %s", res.StatusCode, string(pretty), path)
 	}
 
 	return res, nil

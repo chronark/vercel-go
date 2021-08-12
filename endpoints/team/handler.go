@@ -15,18 +15,22 @@ func New(vercelClient api.VercelClient) *TeamHandler {
 	}
 }
 
-// Return the authenticated user
+// Return the team info
 func (h *TeamHandler) Get(req GetTeamRequest) (res GetTeamResponse, err error) {
+	path := "/v1/teams"
 
+	// Teams can be references by their id or slug.
+	// If id the url looks like this: .../<id>
+	// Or when using a slug: ...?slug=<slug>
 	if req.Id != "" {
-		err = h.vercelClient.Call("GET", fmt.Sprintf("/v1/teams/%s", req.Id), nil, &res)
+		path = fmt.Sprintf("%s/%s", path, req.Id)
 	} else if req.Slug != "" {
-		fmt.Println(req.Slug)
-		err = h.vercelClient.Call("GET", fmt.Sprintf("/v1/teams?slug=%s", req.Slug), nil, &res)
+		path = fmt.Sprintf("/v1/teams?slug=%s", req.Slug)
 	} else {
 		return GetTeamResponse{}, fmt.Errorf("Unable to fetch team: Either `Id` or `Slug` must be defined")
 	}
 
+	err = h.vercelClient.Call("GET", path, nil, &res)
 	if err != nil {
 		return GetTeamResponse{}, fmt.Errorf("Unable to fetch team from vercel: %w", err)
 	}
