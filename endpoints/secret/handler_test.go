@@ -15,6 +15,33 @@ import (
 	"github.com/chronark/vercel-go/utils/mocks"
 )
 
+/* Run all tests on a personal account an on a team account */
+type testCase struct {
+	name    string
+	handler *secret.SecretHandler
+}
+
+var (
+	token string
+	tests []testCase
+)
+
+func init() {
+	token = os.Getenv("VERCEL_TOKEN")
+	if token == "" {
+		panic("VERCEL_TOKEN must be defined")
+	}
+	teamId := os.Getenv("VERCEL_TEAM_ID")
+	if teamId == "" {
+		panic("VERCEL_TEAM_ID must be defined")
+	}
+
+	tests = []testCase{
+		{name: "personal", handler: secret.New(api.New(api.NewClientConfig{Token: token}), "")},
+		{name: "team", handler: secret.New(api.New(api.NewClientConfig{Token: token}), teamId)},
+	}
+}
+
 func TestListSecretsWithResponse400(t *testing.T) {
 	client := &mocks.MockHTTPClient{
 		MockDo: func(req *http.Request) (*http.Response, error) {
@@ -24,7 +51,7 @@ func TestListSecretsWithResponse400(t *testing.T) {
 			return res, nil
 		},
 	}
-	handler := secret.New(api.New(api.NewClientConfig{HTTPClient: client}))
+	handler := secret.New(api.New(api.NewClientConfig{HTTPClient: client}), "")
 
 	_, err := handler.ListSecrets(secret.ListSecretsRequest{})
 
@@ -32,90 +59,105 @@ func TestListSecretsWithResponse400(t *testing.T) {
 
 }
 func TestListSecrets(t *testing.T) {
-	handler := secret.New(api.New(api.NewClientConfig{Token: os.Getenv("VERCEL_TOKEN")}))
-	name := uuid.NewString()
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			name := uuid.NewString()
 
-	//Create at least 1 secret and delete it afterwards
-	defer func() {
-		_, err := handler.Delete(secret.DeleteSecretRequest{Name: name})
-		require.NoError(t, err)
-	}()
-	_, err := handler.Create(secret.CreateSecretsRequest{Name: name, Value: "secret"})
-	require.NoError(t, err)
+			//Create at least 1 secret and delete it afterwards
+			defer func() {
+				_, err := tt.handler.Delete(secret.DeleteSecretRequest{Name: name})
+				require.NoError(t, err)
+			}()
+			_, err := tt.handler.Create(secret.CreateSecretsRequest{Name: name, Value: "secret"})
+			require.NoError(t, err)
 
-	res, err := handler.ListSecrets(secret.ListSecretsRequest{})
+			res, err := tt.handler.ListSecrets(secret.ListSecretsRequest{})
 
-	require.NoError(t, err)
-	require.True(t, len(res.Secrets) > 0)
+			require.NoError(t, err)
+			require.True(t, len(res.Secrets) > 0)
+		})
+	}
 }
 
 func TestGetSecretWithName(t *testing.T) {
-	handler := secret.New(api.New(api.NewClientConfig{Token: os.Getenv("VERCEL_TOKEN")}))
-	name := uuid.NewString()
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			name := uuid.NewString()
 
-	//Create at least 1 secret and delete it afterwards
-	defer func() {
-		_, err := handler.Delete(secret.DeleteSecretRequest{Name: name})
-		require.NoError(t, err)
-	}()
-	_, err := handler.Create(secret.CreateSecretsRequest{Name: name, Value: "secret"})
-	require.NoError(t, err)
+			//Create at least 1 secret and delete it afterwards
+			defer func() {
+				_, err := tt.handler.Delete(secret.DeleteSecretRequest{Name: name})
+				require.NoError(t, err)
+			}()
+			_, err := tt.handler.Create(secret.CreateSecretsRequest{Name: name, Value: "secret"})
+			require.NoError(t, err)
 
-	res, err := handler.GetSecret(secret.GetSecretRequest{Name: name})
+			res, err := tt.handler.GetSecret(secret.GetSecretRequest{Name: name})
 
-	require.NoError(t, err)
-	require.True(t, len(res.Name) > 0)
+			require.NoError(t, err)
+			require.True(t, len(res.Name) > 0)
+		})
+	}
 }
 
 func TestGetSecretWithId(t *testing.T) {
-	handler := secret.New(api.New(api.NewClientConfig{Token: os.Getenv("VERCEL_TOKEN")}))
-	name := uuid.NewString()
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			name := uuid.NewString()
 
-	//Create at least 1 secret and delete it afterwards
-	defer func() {
-		_, err := handler.Delete(secret.DeleteSecretRequest{Name: name})
-		require.NoError(t, err)
-	}()
-	createRes, err := handler.Create(secret.CreateSecretsRequest{Name: name, Value: "secret"})
-	require.NoError(t, err)
+			//Create at least 1 secret and delete it afterwards
+			defer func() {
+				_, err := tt.handler.Delete(secret.DeleteSecretRequest{Name: name})
+				require.NoError(t, err)
+			}()
+			createRes, err := tt.handler.Create(secret.CreateSecretsRequest{Name: name, Value: "secret"})
+			require.NoError(t, err)
 
-	res, err := handler.GetSecret(secret.GetSecretRequest{Id: createRes.Uid})
+			res, err := tt.handler.GetSecret(secret.GetSecretRequest{Id: createRes.Uid})
 
-	require.NoError(t, err)
-	require.True(t, len(res.Name) > 0)
+			require.NoError(t, err)
+			require.True(t, len(res.Name) > 0)
+		})
+	}
 }
 
 func TestCreateSecret(t *testing.T) {
-	handler := secret.New(api.New(api.NewClientConfig{Token: os.Getenv("VERCEL_TOKEN")}))
-	name := uuid.NewString()
-	defer func() {
-		_, err := handler.Delete(secret.DeleteSecretRequest{Name: name})
-		require.NoError(t, err)
-	}()
-	res, err := handler.Create(secret.CreateSecretsRequest{Name: name, Value: "value"})
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
 
-	require.NoError(t, err)
-	foundRes, err := handler.GetSecret(secret.GetSecretRequest{Name: name})
-	require.NoError(t, err)
-	require.Equal(t, res.Uid, foundRes.Uid)
+			name := uuid.NewString()
+			defer func() {
+				_, err := tt.handler.Delete(secret.DeleteSecretRequest{Name: name})
+				require.NoError(t, err)
+			}()
+			res, err := tt.handler.Create(secret.CreateSecretsRequest{Name: name, Value: "value"})
+
+			require.NoError(t, err)
+			foundRes, err := tt.handler.GetSecret(secret.GetSecretRequest{Name: name})
+			require.NoError(t, err)
+			require.Equal(t, res.Uid, foundRes.Uid)
+		})
+	}
 }
 
 func TestRenameSecret(t *testing.T) {
-	handler := secret.New(api.New(api.NewClientConfig{Token: os.Getenv("VERCEL_TOKEN")}))
-	name := uuid.NewString()
-	newName := uuid.NewString()
-	defer func() {
-		_, err := handler.Delete(secret.DeleteSecretRequest{Name: newName})
-		require.NoError(t, err)
-	}()
-	createRes, err := handler.Create(secret.CreateSecretsRequest{Name: name, Value: "value"})
-	require.NoError(t, err)
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			name := uuid.NewString()
+			newName := uuid.NewString()
+			defer func() {
+				_, err := tt.handler.Delete(secret.DeleteSecretRequest{Name: newName})
+				require.NoError(t, err)
+			}()
+			createRes, err := tt.handler.Create(secret.CreateSecretsRequest{Name: name, Value: "value"})
+			require.NoError(t, err)
 
-	_, err = handler.Rename(secret.RenameSecretRequest{Name: name, NewName: newName})
-	require.NoError(t, err)
+			_, err = tt.handler.Rename(secret.RenameSecretRequest{Name: name, NewName: newName})
+			require.NoError(t, err)
 
-	foundRes, err := handler.GetSecret(secret.GetSecretRequest{Name: newName})
-	require.NoError(t, err)
-	require.Equal(t, createRes.Uid, foundRes.Uid)
-
+			foundRes, err := tt.handler.GetSecret(secret.GetSecretRequest{Name: newName})
+			require.NoError(t, err)
+			require.Equal(t, createRes.Uid, foundRes.Uid)
+		})
+	}
 }

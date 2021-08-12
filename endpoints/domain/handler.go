@@ -8,18 +8,25 @@ import (
 
 type DomainHandler struct {
 	vercelClient api.VercelClient
+	teamId       string
 }
 
-func New(vercelClient api.VercelClient) *DomainHandler {
+func New(vercelClient api.VercelClient, teamId string) *DomainHandler {
 	return &DomainHandler{
 		vercelClient,
+		teamId,
 	}
 }
 
 // Retrieves a list of domains registered for the authenticating user. By default it returns the
 // last 20 domains if no limit is provided.
 func (h *DomainHandler) List(req ListDomainsRequest) (res ListDomainsResponse, err error) {
-	err = h.vercelClient.Call("GET", "/v5/domains", nil, &res)
+	path := "/v5/domains"
+	if h.teamId != "" {
+		path = fmt.Sprintf("%s?teamId=%s", path, h.teamId)
+	}
+
+	err = h.vercelClient.Call("GET", path, nil, &res)
 
 	if err != nil {
 		return ListDomainsResponse{}, fmt.Errorf("Unable to fetch domains from vercel: %w", err)
@@ -38,7 +45,12 @@ func (h *DomainHandler) List(req ListDomainsRequest) (res ListDomainsResponse, e
 // retry the same POST and the endpoint shall return verified: true, if the
 // domain was verified successfully.
 func (h *DomainHandler) Add(req AddDomainRequest) (res AddDomainResponse, err error) {
-	err = h.vercelClient.Call("POST", "/v4/domains", req, &res)
+	path := "/v4/domains"
+	if h.teamId != "" {
+		path = fmt.Sprintf("%s?teamId=%s", path, h.teamId)
+	}
+
+	err = h.vercelClient.Call("POST", path, req, &res)
 
 	if err != nil {
 		return AddDomainResponse{}, fmt.Errorf("Unable to add domain to vercel: %w", err)
@@ -48,7 +60,11 @@ func (h *DomainHandler) Add(req AddDomainRequest) (res AddDomainResponse, err er
 
 // Initiate a domain transfer request from an external Registrar to Vercel.
 func (h *DomainHandler) Transfer(req TransferDomainRequest) (res TransferDomainResponse, err error) {
-	err = h.vercelClient.Call("POST", "/v4/domains", req, &res)
+	path := "/v4/domains"
+	if h.teamId != "" {
+		path = fmt.Sprintf("%s?teamId=%s", path, h.teamId)
+	}
+	err = h.vercelClient.Call("POST", path, req, &res)
 
 	if err != nil {
 		return TransferDomainResponse{}, fmt.Errorf("Unable to transfer domain to vercel: %w", err)
@@ -59,7 +75,11 @@ func (h *DomainHandler) Transfer(req TransferDomainRequest) (res TransferDomainR
 // Verify a domain after adding either the intended nameservers or DNS TXT
 // verification record to the domain.
 func (h *DomainHandler) Verify(req VerifyDomainRequest) (res VerifyDomainResponse, err error) {
-	err = h.vercelClient.Call("POST", fmt.Sprintf("/v4/domains/%s/verify", req.Name), nil, &res)
+	path := fmt.Sprintf("/v4/domains/%s/verify", req.Name)
+	if h.teamId != "" {
+		path = fmt.Sprintf("%s?teamId=%s", path, h.teamId)
+	}
+	err = h.vercelClient.Call("POST", path, nil, &res)
 
 	if err != nil {
 		return VerifyDomainResponse{}, fmt.Errorf("Unable to verify domain: %w", err)
@@ -69,7 +89,11 @@ func (h *DomainHandler) Verify(req VerifyDomainRequest) (res VerifyDomainRespons
 
 // Get information for a single domain in an account or team.
 func (h *DomainHandler) Get(req GetDomainRequest) (res GetDomainResponse, err error) {
-	err = h.vercelClient.Call("GET", fmt.Sprintf("/v4/domains/%s", req.Name), nil, &res)
+	path := fmt.Sprintf("/v4/domains/%s", req.Name)
+	if h.teamId != "" {
+		path = fmt.Sprintf("%s?teamId=%s", path, h.teamId)
+	}
+	err = h.vercelClient.Call("GET", path, nil, &res)
 
 	if err != nil {
 		return GetDomainResponse{}, fmt.Errorf("Unable to get domain from vercel: %w", err)
@@ -79,7 +103,11 @@ func (h *DomainHandler) Get(req GetDomainRequest) (res GetDomainResponse, err er
 
 // Get Auth Code for a Single Domain
 func (h *DomainHandler) GetAuthCode(req GetAuthCodeRequest) (res GetAuthCodeResponse, err error) {
-	err = h.vercelClient.Call("GET", fmt.Sprintf("/v6/domains/%s/auth-code", req.Name), nil, &res)
+	path := fmt.Sprintf("/v6/domains/%s/auth-code", req.Name)
+	if h.teamId != "" {
+		path = fmt.Sprintf("%s?teamId=%s", path, h.teamId)
+	}
+	err = h.vercelClient.Call("GET", path, nil, &res)
 
 	if err != nil {
 		return GetAuthCodeResponse{}, fmt.Errorf("Unable to get auth code: %w", err)
@@ -89,7 +117,12 @@ func (h *DomainHandler) GetAuthCode(req GetAuthCodeRequest) (res GetAuthCodeResp
 
 // Remove a domain by name
 func (h *DomainHandler) Remove(req RemoveDomainRequest) (res RemoveDomainResponse, err error) {
-	err = h.vercelClient.Call("DELETE", fmt.Sprintf("/v4/domains/%s", req.Name), nil, &res)
+	path := fmt.Sprintf("/v4/domains/%s", req.Name)
+	if h.teamId != "" {
+		path = fmt.Sprintf("%s?teamId=%s", path, h.teamId)
+	}
+
+	err = h.vercelClient.Call("DELETE", path, nil, &res)
 
 	if err != nil {
 		return RemoveDomainResponse{}, fmt.Errorf("Unable to remove domain from vercel: %w", err)
@@ -99,7 +132,11 @@ func (h *DomainHandler) Remove(req RemoveDomainRequest) (res RemoveDomainRespons
 
 // Check if a domain name may be available to buy or not
 func (h *DomainHandler) CheckAvailability(req CheckAvailabilityRequest) (res CheckAvailabilityResponse, err error) {
-	err = h.vercelClient.Call("GET", fmt.Sprintf("/v4/domains/status?name=%s", req.Name), nil, &res)
+	path := fmt.Sprintf("/v4/domains/status?name=%s", req.Name)
+	if h.teamId != "" {
+		path = fmt.Sprintf("%s&teamId=%s", path, h.teamId)
+	}
+	err = h.vercelClient.Call("GET", path, nil, &res)
 
 	if err != nil {
 		return CheckAvailabilityResponse{}, fmt.Errorf("Unable to check availability: %w", err)
@@ -109,7 +146,11 @@ func (h *DomainHandler) CheckAvailability(req CheckAvailabilityRequest) (res Che
 
 // Check the price to purchase a domain and how long a single purchase period is
 func (h *DomainHandler) CheckPrice(req CheckPriceRequest) (res CheckPriceResponse, err error) {
-	err = h.vercelClient.Call("GET", fmt.Sprintf("/v4/domains/price?name=%s", req.Name), nil, &res)
+	path := fmt.Sprintf("/v4/domains/price?name=%s", req.Name)
+	if h.teamId != "" {
+		path = fmt.Sprintf("%s&teamId=%s", path, h.teamId)
+	}
+	err = h.vercelClient.Call("GET", path, nil, &res)
 
 	if err != nil {
 		return CheckPriceResponse{}, fmt.Errorf("Unable to check price: %w", err)
@@ -119,7 +160,11 @@ func (h *DomainHandler) CheckPrice(req CheckPriceRequest) (res CheckPriceRespons
 
 // Purchase the specified domain
 func (h *DomainHandler) Purchase(req PurchaseRequest) (res PurchaseResponse, err error) {
-	err = h.vercelClient.Call("POST", "/v4/domains/buy", nil, &res)
+	path := "/v4/domains/buy"
+	if h.teamId != "" {
+		path = fmt.Sprintf("%s?teamId=%s", path, h.teamId)
+	}
+	err = h.vercelClient.Call("POST", path, nil, &res)
 
 	if err != nil {
 		return PurchaseResponse{}, fmt.Errorf("Unable to purchase domain from vercel: %w", err)
