@@ -16,10 +16,11 @@ func New(vercelClient api.VercelClient) *UserHandler {
 }
 
 // Return the authenticated user
-func (h *UserHandler) Get() (userResponse UserResponse, err error) {
-	err = h.vercelClient.Call("GET", "/www/user", nil, &userResponse)
+func (h *UserHandler) Get() (res UserResponse, err error) {
+	apiRequest := api.NewApiRequest("GET", "/www/user", &res)
+	err = h.vercelClient.Call(apiRequest)
 	if err != nil {
 		return UserResponse{}, fmt.Errorf("Unable to fetch user from vercel: %w", err)
 	}
-	return userResponse, nil
+	return res, nil
 }

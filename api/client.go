@@ -6,14 +6,33 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"net/url"
 )
+
+type apiRequest struct {
+	Method         string
+	Path           string
+	Body           interface{}
+	Query          url.Values
+	ResponseTarget interface{}
+}
+
+func NewApiRequest(method string, path string, ResponseTarget interface{}) apiRequest {
+	return apiRequest{
+		Method:         method,
+		Path:           path,
+		Body:           nil,
+		Query:          url.Values{},
+		ResponseTarget: ResponseTarget,
+	}
+}
 
 type HTTPClient interface {
 	Do(req *http.Request) (*http.Response, error)
 }
 
 type VercelClient interface {
-	Call(method string, path string, requestBody interface{}, responseTarget interface{}) error
+	Call(req apiRequest) error
 }
 
 type vercelClient struct {
@@ -106,14 +125,20 @@ func (c *vercelClient) request(method string, path string, body interface{}) (*h
 }
 
 // Call the Vercel API and unmarshal its response directly
-func (c *vercelClient) Call(method string, path string, requestBody interface{}, responseTarget interface{}) error {
-	httpResponse, err := c.request(method, path, requestBody)
+func (c *vercelClient) Call(req apiRequest) error {
+	path := req.Path
+	query := req.Query.Encode()
+	if query != "" {
+		path = fmt.Sprintf("%s?%s", path, query)
+	}
+
+	httpResponse, err := c.request(req.Method, path, req.Body)
 	if err != nil {
 		return err
 	}
 	defer httpResponse.Body.Close()
 
-	err = json.NewDecoder(httpResponse.Body).Decode(responseTarget)
+	err = json.NewDecoder(httpResponse.Body).Decode(req.ResponseTarget)
 	if err != nil {
 		return fmt.Errorf("Unable to unmarshal response: %w", err)
 	}
