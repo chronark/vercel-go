@@ -20,11 +20,11 @@ func New(vercelClient api.VercelClient, teamId string) *SecretHandler {
 
 // Retrieves the active now secrets for the authenticating user.
 func (h *SecretHandler) ListSecrets(req ListSecretsRequest) (res ListSecretsResponse, err error) {
-	path := "/v3/now/secrets"
+	apiRequest := api.NewApiRequest("GET", "/v3/now/secrets", &res)
 	if h.teamId != "" {
-		path = fmt.Sprintf("%s?teamId=%s", path, h.teamId)
+		apiRequest.Query.Add("teamId", h.teamId)
 	}
-	err = h.vercelClient.Call("GET", path, nil, &res)
+	err = h.vercelClient.Call(apiRequest)
 
 	if err != nil {
 		return ListSecretsResponse{}, fmt.Errorf("Unable to fetch secrets from vercel: %w", err)
@@ -41,13 +41,14 @@ func (h *SecretHandler) GetSecret(req GetSecretRequest) (res GetSecretResponse, 
 	} else if req.Name != "" {
 		path = fmt.Sprintf("%s/%s", path, req.Name)
 	} else {
-		return GetSecretResponse{}, fmt.Errorf("Unable to fetch team: Either `Id` or `Slug` must be defined")
+		return GetSecretResponse{}, fmt.Errorf("Unable to fetch secret: Either `Id` or `Slug` must be defined")
 	}
+	apiRequest := api.NewApiRequest("GET", path, &res)
 	if h.teamId != "" {
-		path = fmt.Sprintf("%s?teamId=%s", path, h.teamId)
+		apiRequest.Query.Add("teamId", h.teamId)
 	}
 
-	err = h.vercelClient.Call("GET", path, nil, &res)
+	err = h.vercelClient.Call(apiRequest)
 
 	if err != nil {
 		return GetSecretResponse{}, fmt.Errorf("Unable to fetch secrets from vercel: %w", err)
@@ -57,12 +58,14 @@ func (h *SecretHandler) GetSecret(req GetSecretRequest) (res GetSecretResponse, 
 
 // Retrieves the active now secrets for the authenticating user.
 func (h *SecretHandler) Create(req CreateSecretsRequest) (res CreateSecretsResponse, err error) {
-	path := "/v2/now/secrets"
+
+	apiRequest := api.NewApiRequest("POST", "/v2/now/secrets", &res)
+	apiRequest.Body = req
 	if h.teamId != "" {
-		path = fmt.Sprintf("%s?teamId=%s", path, h.teamId)
+		apiRequest.Query.Add("teamId", h.teamId)
 	}
 
-	err = h.vercelClient.Call("POST", path, req, &res)
+	err = h.vercelClient.Call(apiRequest)
 
 	if err != nil {
 		return CreateSecretsResponse{}, fmt.Errorf("Unable to create secret: %w", err)
@@ -73,15 +76,16 @@ func (h *SecretHandler) Create(req CreateSecretsRequest) (res CreateSecretsRespo
 // This endpoint provides an opportunity to edit the name of a user's secret.
 // The name has to be unique to that user's secrets.
 func (h *SecretHandler) Rename(req RenameSecretRequest) (res RenameSecretResponse, err error) {
-	path := fmt.Sprintf("/v2/now/secrets/%s", req.Name)
-	if h.teamId != "" {
-		path = fmt.Sprintf("%s?teamId=%s", path, h.teamId)
-	}
 	type Payload struct {
 		Name string `json:"name"`
 	}
+	apiRequest := api.NewApiRequest("PATCH", fmt.Sprintf("/v2/now/secrets/%s", req.Name), &res)
+	apiRequest.Body = Payload{Name: req.NewName}
+	if h.teamId != "" {
+		apiRequest.Query.Add("teamId", h.teamId)
+	}
 
-	err = h.vercelClient.Call("PATCH", path, Payload{Name: req.NewName}, &res)
+	err = h.vercelClient.Call(apiRequest)
 
 	if err != nil {
 		return RenameSecretResponse{}, fmt.Errorf("Unable to rename secret: %w", err)
@@ -92,11 +96,12 @@ func (h *SecretHandler) Rename(req RenameSecretRequest) (res RenameSecretRespons
 // This endpoint provides an opportunity to edit the name of a user's secret.
 // The name has to be unique to that user's secrets.
 func (h *SecretHandler) Delete(req DeleteSecretRequest) (res DeleteSecretResponse, err error) {
-	path := fmt.Sprintf("/v2/now/secrets/%s", req.Name)
+
+	apiRequest := api.NewApiRequest("DELETE", fmt.Sprintf("/v2/now/secrets/%s", req.Name), &res)
 	if h.teamId != "" {
-		path = fmt.Sprintf("%s?teamId=%s", path, h.teamId)
+		apiRequest.Query.Add("teamId", h.teamId)
 	}
-	err = h.vercelClient.Call("DELETE", path, nil, &res)
+	err = h.vercelClient.Call(apiRequest)
 
 	if err != nil {
 		return DeleteSecretResponse{}, fmt.Errorf("Unable to delete secret: %w", err)
