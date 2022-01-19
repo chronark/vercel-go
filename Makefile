@@ -8,9 +8,8 @@ test:
 
 
 fmt:
-	golangci-lint run -v
 	go fmt ./...
-
+	go vet ./...
 
 release:
 	npx release-it	
