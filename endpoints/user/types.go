@@ -4,7 +4,7 @@ type UserResponse struct {
 	User User `json:"user"`
 }
 type User struct {
-	UID             string `json:"uid"`
+	Uid             string `json:"uid"`
 	Email           string `json:"email"`
 	Name            string `json:"name"`
 	Username        string `json:"username"`

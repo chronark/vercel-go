@@ -10,8 +10,8 @@ type Domain struct {
 
 	// The date at which the domain is set to expire. null if not bought with Vercel.
 	ExpiresAt interface{} `json:"expiresAt"`
-	// The unique ID of the domain.
-	ID string `json:"id"`
+	// The unique id of the domain.
+	Id string `json:"id"`
 
 	// The domain name.
 	Name string `json:"name"`
@@ -27,7 +27,7 @@ type Domain struct {
 	// The date at which the domain's TXT DNS record was verified.
 	TxtVerifiedAt interface{} `json:"txtVerifiedAt"`
 
-	// The ID of the verification record in the registry.
+	// The id of the verification record in the registry.
 	VerificationRecord string `json:"verificationRecord"`
 
 	// Whether the domain has the Vercel Edge Network enabled or not.
@@ -47,8 +47,8 @@ type Domain struct {
 
 	// An object containing information of the domain creator, including the user's id, username, and email.
 	Creator struct {
-		ID         string      `json:"id"`
-		CustomerID interface{} `json:"customerId"`
+		Id         string      `json:"id"`
+		Customerid interface{} `json:"customerid"`
 		Email      string      `json:"email"`
 		Username   string      `json:"username"`
 		Name       string      `json:"name"`
@@ -140,14 +140,14 @@ type GetAuthCodeResponse struct {
 	AuthCode string `json:"authCode"`
 }
 
-type RemoveDomainRequest struct {
+type DeleteDomainRequest struct {
 	// The domain name you want to remove.
 	// Required: Yes
 	Name string `json:"name"`
 }
 
-type RemoveDomainResponse struct {
-	// The unique ID of the removed domain.
+type DeleteDomainResponse struct {
+	// The unique id of the removed domain.
 	Uid string `json:"uid"`
 }
 

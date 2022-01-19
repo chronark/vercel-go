@@ -2,7 +2,7 @@ package team
 
 import "time"
 
-// Either `Id` or `Slug` must be defined
+// Either `id` or `Slug` must be defined
 type GetTeamRequest struct {
 	// The team unique identifier. Always prepended by team_.
 	// Required: false
@@ -13,10 +13,10 @@ type GetTeamRequest struct {
 }
 
 type GetTeamResponse struct {
-	ID         string    `json:"id"`
+	Id         string    `json:"id"`
 	Slug       string    `json:"slug"`
 	Name       string    `json:"name"`
-	CreatorID  string    `json:"creatorId"`
+	Creatorid  string    `json:"creatorid"`
 	Created    time.Time `json:"created"`
 	CreatedAt  int64     `json:"createdAt"`
 	UpdatedAt  int64     `json:"updatedAt"`
@@ -26,7 +26,7 @@ type GetTeamResponse struct {
 		Confirmed bool   `json:"confirmed"`
 		Created   int64  `json:"created"`
 		CreatedAt int64  `json:"createdAt"`
-		UID       string `json:"uid"`
+		Uid       string `json:"uid"`
 		UpdatedAt int64  `json:"updatedAt"`
 	} `json:"membership"`
 	PlatformVersion interface{} `json:"platformVersion"`
@@ -72,7 +72,7 @@ type GetTeamResponse struct {
 		Platform      string      `json:"platform"`
 		Overdue       interface{} `json:"overdue"`
 		Subscriptions []struct {
-			ID     string      `json:"id"`
+			Id     string      `json:"id"`
 			Trial  interface{} `json:"trial"`
 			Period struct {
 				Start int64 `json:"start"`
@@ -84,9 +84,9 @@ type GetTeamResponse struct {
 			} `json:"frequency"`
 			Discount interface{} `json:"discount"`
 			Items    []struct {
-				ID        string `json:"id"`
-				PriceID   string `json:"priceId"`
-				ProductID string `json:"productId"`
+				Id        string `json:"id"`
+				Priceid   string `json:"priceid"`
+				Productid string `json:"productid"`
 				Amount    int    `json:"amount"`
 				Quantity  int    `json:"quantity"`
 			} `json:"items"`

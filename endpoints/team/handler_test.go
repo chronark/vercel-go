@@ -23,7 +23,7 @@ func TestGetTeamWithSlug(t *testing.T) {
 	require.True(t, len(res.Name) > 0)
 }
 
-func TestGetTeamWithId(t *testing.T) {
+func TestGetTeamWithid(t *testing.T) {
 	handler := team.New(api.New(api.NewClientConfig{Token: os.Getenv("VERCEL_TOKEN")}))
 
 	res, err := handler.Get(team.GetTeamRequest{Id: "team_ZYPNERZjT0L9LkPdP0Y9ZtS2"})
@@ -32,7 +32,7 @@ func TestGetTeamWithId(t *testing.T) {
 	require.True(t, len(res.Name) > 0)
 }
 
-func TestGetTeamWithoutIdOrSlug(t *testing.T) {
+func TestGetTeamWithoutidOrSlug(t *testing.T) {
 	handler := team.New(api.New(api.NewClientConfig{Token: os.Getenv("VERCEL_TOKEN")}))
 
 	_, err := handler.Get(team.GetTeamRequest{})

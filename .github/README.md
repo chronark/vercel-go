@@ -31,15 +31,15 @@ The main application of this library is in a [terraform provider](https://github
     - [x] **v4** Verify a Domain
     - [x] **v4** Get Information for a Single Domain
     - [x] **v6** Get Auth Code for a Single Domain
-    - [x] **v4** Remove a domain by name
+    - [x] **v4** Delete a domain by name
     - [x] **v4** Check a domain availability
     - [x] **v4** Check the price of a domain
     - [x] **v4** Purchase a domain
 
-- [ ] DNS    
-    - [ ] List all the DNS records of a domain
-    - [ ] Create a new DNS record
-    - [ ] Remove a DNS record        
+- [x] DNS    
+    - [x] **v4** List all the DNS records of a domain
+    - [x] **v2** Create a new DNS record
+    - [x] **v2** Delete a DNS record        
 
 - [ ] Certificates   
     - [ ] List cerfiticates
@@ -51,7 +51,7 @@ The main application of this library is in a [terraform provider](https://github
 - [ ] Aliases    
     - [ ] List all the aliases
     - [ ] Get a Single Alias
-    - [ ] Remove an Alias
+    - [ ] Delete an Alias
     - [ ] Purge Alias in the CDN
     - [ ] List aliases by deployment
     - [ ] Assign an alias to a deployment
@@ -74,22 +74,22 @@ The main application of this library is in a [terraform provider](https://github
     - [ ] Change user role or status
     - [ ] Request to join to a team
     - [ ] Check status of a join request
-    - [ ] Remove user from team
+    - [ ] Delete user from team
 
 - [ ] Projects
-    - [ ] Create a Project
-    - [ ] Get Projects
-    - [ ] Get a Single Project
-    - [ ] Update a Single Project
-    - [ ] Remove a Single Project
+    - [x] **v8** Create a Project
+    - [x] **v8** Get Projects
+    - [x] **v8** Get a Single Project
+    - [x] **v8** Update a Single Project
+    - [x] **v8** Delete a Single Project
     - [ ] Get Project Environment Variables
-    - [ ] Create a Project Environment Variable
-    - [ ] Edit a Project Environment Variable
-    - [ ] Delete a Specific Environment Variable
-    - [ ] Add a Domain to a Project
-    - [ ] Get Project Domains
-    - [ ] Get a Single Project Domain
-    - [ ] Set Redirect for a Project Domain
+    - [x] **v8** Create a Project Environment Variable
+    - [x] **v8** Edit a Project Environment Variable
+    - [x] **v8** Delete a Specific Environment Variable
+    - [x] **v8** Add a Domain to a Project
+    - [x] **v8** Get Project Domains
+    - [x] **v8** Get a Single Project Domain
+    - [x] **v8** Update a Project Domain
     - [ ] Delete a Specific Production Domain of a Project
 
 - [ ] Authentication
