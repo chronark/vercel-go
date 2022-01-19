@@ -95,11 +95,10 @@ func (c *vercelClient) request(method string, path string, body interface{}) (*h
 	if err != nil {
 		return nil, fmt.Errorf("Unable to create request: %w", err)
 	}
-
 	req.Header.Set("User-Agent", c.userAgent)
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", c.token))
-
+	fmt.Printf("Method: %s, Path: %s, Payload: %+v\n", method, path, payload)
 	res, err := c.httpClient.Do(req)
 	if err != nil {
 		return nil, fmt.Errorf("Unable to perform request: %w", err)
@@ -137,7 +136,9 @@ func (c *vercelClient) Call(req apiRequest) error {
 		return err
 	}
 	defer httpResponse.Body.Close()
-
+	if req.ResponseTarget == nil {
+		return nil
+	}
 	err = json.NewDecoder(httpResponse.Body).Decode(req.ResponseTarget)
 	if err != nil {
 		return fmt.Errorf("Unable to unmarshal response: %w", err)

@@ -8,21 +8,21 @@ import (
 
 type SecretHandler struct {
 	vercelClient api.VercelClient
-	teamId       string
+	teamid       string
 }
 
-func New(vercelClient api.VercelClient, teamId string) *SecretHandler {
+func New(vercelClient api.VercelClient, teamid string) *SecretHandler {
 	return &SecretHandler{
 		vercelClient,
-		teamId,
+		teamid,
 	}
 }
 
 // Retrieves the active now secrets for the authenticating user.
 func (h *SecretHandler) ListSecrets(req ListSecretsRequest) (res ListSecretsResponse, err error) {
 	apiRequest := api.NewApiRequest("GET", "/v3/now/secrets", &res)
-	if h.teamId != "" {
-		apiRequest.Query.Add("teamId", h.teamId)
+	if h.teamid != "" {
+		apiRequest.Query.Add("teamId", h.teamid)
 	}
 	err = h.vercelClient.Call(apiRequest)
 
@@ -33,19 +33,13 @@ func (h *SecretHandler) ListSecrets(req ListSecretsRequest) (res ListSecretsResp
 }
 
 // Get the information for a specific secret by passing either the secret id or name.
-func (h *SecretHandler) GetSecret(req GetSecretRequest) (res GetSecretResponse, err error) {
-	path := "/v3/now/secrets"
+func (h *SecretHandler) GetSecret(secretIdOrName string) (res GetSecretResponse, err error) {
 
-	if req.Id != "" {
-		path = fmt.Sprintf("%s/%s", path, req.Id)
-	} else if req.Name != "" {
-		path = fmt.Sprintf("%s/%s", path, req.Name)
-	} else {
-		return GetSecretResponse{}, fmt.Errorf("Unable to fetch secret: Either `Id` or `Slug` must be defined")
-	}
+	path := fmt.Sprintf("/v3/now/secrets/%s", secretIdOrName)
+
 	apiRequest := api.NewApiRequest("GET", path, &res)
-	if h.teamId != "" {
-		apiRequest.Query.Add("teamId", h.teamId)
+	if h.teamid != "" {
+		apiRequest.Query.Add("teamId", h.teamid)
 	}
 
 	err = h.vercelClient.Call(apiRequest)
@@ -61,8 +55,8 @@ func (h *SecretHandler) Create(req CreateSecretsRequest) (res CreateSecretsRespo
 
 	apiRequest := api.NewApiRequest("POST", "/v2/now/secrets", &res)
 	apiRequest.Body = req
-	if h.teamId != "" {
-		apiRequest.Query.Add("teamId", h.teamId)
+	if h.teamid != "" {
+		apiRequest.Query.Add("teamId", h.teamid)
 	}
 
 	err = h.vercelClient.Call(apiRequest)
@@ -81,8 +75,8 @@ func (h *SecretHandler) Rename(req RenameSecretRequest) (res RenameSecretRespons
 	}
 	apiRequest := api.NewApiRequest("PATCH", fmt.Sprintf("/v2/now/secrets/%s", req.Name), &res)
 	apiRequest.Body = Payload{Name: req.NewName}
-	if h.teamId != "" {
-		apiRequest.Query.Add("teamId", h.teamId)
+	if h.teamid != "" {
+		apiRequest.Query.Add("teamId", h.teamid)
 	}
 
 	err = h.vercelClient.Call(apiRequest)
@@ -98,8 +92,8 @@ func (h *SecretHandler) Rename(req RenameSecretRequest) (res RenameSecretRespons
 func (h *SecretHandler) Delete(req DeleteSecretRequest) (res DeleteSecretResponse, err error) {
 
 	apiRequest := api.NewApiRequest("DELETE", fmt.Sprintf("/v2/now/secrets/%s", req.Name), &res)
-	if h.teamId != "" {
-		apiRequest.Query.Add("teamId", h.teamId)
+	if h.teamid != "" {
+		apiRequest.Query.Add("teamId", h.teamid)
 	}
 	err = h.vercelClient.Call(apiRequest)
 

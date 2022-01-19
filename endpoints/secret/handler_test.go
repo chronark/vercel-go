@@ -31,14 +31,14 @@ func init() {
 	if token == "" {
 		panic("VERCEL_TOKEN must be defined")
 	}
-	teamId := os.Getenv("VERCEL_TEAM_ID")
-	if teamId == "" {
+	teamid := os.Getenv("VERCEL_TEAM_ID")
+	if teamid == "" {
 		panic("VERCEL_TEAM_ID must be defined")
 	}
 
 	tests = []testCase{
 		{name: "personal", handler: secret.New(api.New(api.NewClientConfig{Token: token}), "")},
-		{name: "team", handler: secret.New(api.New(api.NewClientConfig{Token: token}), teamId)},
+		{name: "team", handler: secret.New(api.New(api.NewClientConfig{Token: token}), teamid)},
 	}
 }
 
@@ -92,7 +92,7 @@ func TestGetSecretWithName(t *testing.T) {
 			_, err := tt.handler.Create(secret.CreateSecretsRequest{Name: name, Value: "secret"})
 			require.NoError(t, err)
 
-			res, err := tt.handler.GetSecret(secret.GetSecretRequest{Name: name})
+			res, err := tt.handler.GetSecret(name)
 
 			require.NoError(t, err)
 			require.True(t, len(res.Name) > 0)
@@ -100,7 +100,7 @@ func TestGetSecretWithName(t *testing.T) {
 	}
 }
 
-func TestGetSecretWithId(t *testing.T) {
+func TestGetSecretWithid(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			name := uuid.NewString()
@@ -113,7 +113,7 @@ func TestGetSecretWithId(t *testing.T) {
 			createRes, err := tt.handler.Create(secret.CreateSecretsRequest{Name: name, Value: "secret"})
 			require.NoError(t, err)
 
-			res, err := tt.handler.GetSecret(secret.GetSecretRequest{Id: createRes.Uid})
+			res, err := tt.handler.GetSecret(createRes.Uid)
 
 			require.NoError(t, err)
 			require.True(t, len(res.Name) > 0)
@@ -133,7 +133,7 @@ func TestCreateSecret(t *testing.T) {
 			res, err := tt.handler.Create(secret.CreateSecretsRequest{Name: name, Value: "value"})
 
 			require.NoError(t, err)
-			foundRes, err := tt.handler.GetSecret(secret.GetSecretRequest{Name: name})
+			foundRes, err := tt.handler.GetSecret(name)
 			require.NoError(t, err)
 			require.Equal(t, res.Uid, foundRes.Uid)
 		})
@@ -155,7 +155,7 @@ func TestRenameSecret(t *testing.T) {
 			_, err = tt.handler.Rename(secret.RenameSecretRequest{Name: name, NewName: newName})
 			require.NoError(t, err)
 
-			foundRes, err := tt.handler.GetSecret(secret.GetSecretRequest{Name: newName})
+			foundRes, err := tt.handler.GetSecret(newName)
 			require.NoError(t, err)
 			require.Equal(t, createRes.Uid, foundRes.Uid)
 		})

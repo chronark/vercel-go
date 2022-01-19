@@ -37,7 +37,7 @@ type ListSecretsResponse struct {
 	} `json:"pagination"`
 }
 
-// Either `Name` or `Id` must be provided
+// Either `Name` or `id` must be provided
 type GetSecretRequest struct {
 	// The name of the secret.
 	// Required: false
@@ -56,10 +56,10 @@ type GetSecretResponse struct {
 	Name string `json:"name"`
 
 	// The team unique identifier to which the secret belongs to.
-	TeamId string `json:"teamId"`
+	Teamid string `json:"teamid"`
 
 	// The unique identifier of the user who created the secret.
-	UserId string `json:"userId"`
+	Userid string `json:"userid"`
 
 	// The date when the secret was created.
 	Created string `json:"created"`
@@ -88,7 +88,7 @@ type CreateSecretsResponse struct {
 	Created string `json:"created"`
 
 	// The unique identifier of the user who created the secret.
-	UserId string `json:"userId"`
+	Userid string `json:"userid"`
 
 	// A map with the value of the secret.
 	Value struct {

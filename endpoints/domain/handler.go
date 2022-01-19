@@ -8,13 +8,13 @@ import (
 
 type DomainHandler struct {
 	vercelClient api.VercelClient
-	teamId       string
+	teamid       string
 }
 
-func New(vercelClient api.VercelClient, teamId string) *DomainHandler {
+func New(vercelClient api.VercelClient, teamid string) *DomainHandler {
 	return &DomainHandler{
 		vercelClient,
-		teamId,
+		teamid,
 	}
 }
 
@@ -22,8 +22,8 @@ func New(vercelClient api.VercelClient, teamId string) *DomainHandler {
 // last 20 domains if no limit is provided.
 func (h *DomainHandler) List(req ListDomainsRequest) (res ListDomainsResponse, err error) {
 	apiRequest := api.NewApiRequest("GET", "/v5/domains", &res)
-	if h.teamId != "" {
-		apiRequest.Query.Add("teamId", h.teamId)
+	if h.teamid != "" {
+		apiRequest.Query.Add("teamId", h.teamid)
 	}
 
 	err = h.vercelClient.Call(apiRequest)
@@ -47,8 +47,8 @@ func (h *DomainHandler) List(req ListDomainsRequest) (res ListDomainsResponse, e
 func (h *DomainHandler) Add(req AddDomainRequest) (res AddDomainResponse, err error) {
 	apiRequest := api.NewApiRequest("POST", "/v4/domains", &res)
 	apiRequest.Body = req
-	if h.teamId != "" {
-		apiRequest.Query.Add("teamId", h.teamId)
+	if h.teamid != "" {
+		apiRequest.Query.Add("teamId", h.teamid)
 	}
 
 	err = h.vercelClient.Call(apiRequest)
@@ -63,8 +63,8 @@ func (h *DomainHandler) Add(req AddDomainRequest) (res AddDomainResponse, err er
 func (h *DomainHandler) Transfer(req TransferDomainRequest) (res TransferDomainResponse, err error) {
 	apiRequest := api.NewApiRequest("POST", "/v4/domains", &res)
 	apiRequest.Body = req
-	if h.teamId != "" {
-		apiRequest.Query.Add("teamId", h.teamId)
+	if h.teamid != "" {
+		apiRequest.Query.Add("teamId", h.teamid)
 	}
 	err = h.vercelClient.Call(apiRequest)
 
@@ -79,8 +79,8 @@ func (h *DomainHandler) Transfer(req TransferDomainRequest) (res TransferDomainR
 func (h *DomainHandler) Verify(req VerifyDomainRequest) (res VerifyDomainResponse, err error) {
 
 	apiRequest := api.NewApiRequest("POST", fmt.Sprintf("/v4/domains/%s/verify", req.Name), &res)
-	if h.teamId != "" {
-		apiRequest.Query.Add("teamId", h.teamId)
+	if h.teamid != "" {
+		apiRequest.Query.Add("teamId", h.teamid)
 	}
 	err = h.vercelClient.Call(apiRequest)
 	if err != nil {
@@ -92,8 +92,8 @@ func (h *DomainHandler) Verify(req VerifyDomainRequest) (res VerifyDomainRespons
 // Get information for a single domain in an account or team.
 func (h *DomainHandler) Get(req GetDomainRequest) (res GetDomainResponse, err error) {
 	apiRequest := api.NewApiRequest("GET", fmt.Sprintf("/v4/domains/%s", req.Name), &res)
-	if h.teamId != "" {
-		apiRequest.Query.Add("teamId", h.teamId)
+	if h.teamid != "" {
+		apiRequest.Query.Add("teamId", h.teamid)
 	}
 
 	err = h.vercelClient.Call(apiRequest)
@@ -107,8 +107,8 @@ func (h *DomainHandler) Get(req GetDomainRequest) (res GetDomainResponse, err er
 // Get Auth Code for a Single Domain
 func (h *DomainHandler) GetAuthCode(req GetAuthCodeRequest) (res GetAuthCodeResponse, err error) {
 	apiRequest := api.NewApiRequest("GET", fmt.Sprintf("/v6/domains/%s/auth-code", req.Name), &res)
-	if h.teamId != "" {
-		apiRequest.Query.Add("teamId", h.teamId)
+	if h.teamid != "" {
+		apiRequest.Query.Add("teamId", h.teamid)
 	}
 	err = h.vercelClient.Call(apiRequest)
 
@@ -118,17 +118,17 @@ func (h *DomainHandler) GetAuthCode(req GetAuthCodeRequest) (res GetAuthCodeResp
 	return res, nil
 }
 
-// Remove a domain by name
-func (h *DomainHandler) Remove(req RemoveDomainRequest) (res RemoveDomainResponse, err error) {
+// Delete a domain by name
+func (h *DomainHandler) Delete(req DeleteDomainRequest) (res DeleteDomainResponse, err error) {
 	apiRequest := api.NewApiRequest("DELETE", fmt.Sprintf("/v4/domains/%s", req.Name), &res)
-	if h.teamId != "" {
-		apiRequest.Query.Add("teamId", h.teamId)
+	if h.teamid != "" {
+		apiRequest.Query.Add("teamId", h.teamid)
 	}
 
 	err = h.vercelClient.Call(apiRequest)
 
 	if err != nil {
-		return RemoveDomainResponse{}, fmt.Errorf("Unable to remove domain from vercel: %w", err)
+		return DeleteDomainResponse{}, fmt.Errorf("Unable to remove domain from vercel: %w", err)
 	}
 	return res, nil
 }
@@ -137,8 +137,8 @@ func (h *DomainHandler) Remove(req RemoveDomainRequest) (res RemoveDomainRespons
 func (h *DomainHandler) CheckAvailability(req CheckAvailabilityRequest) (res CheckAvailabilityResponse, err error) {
 	apiRequest := api.NewApiRequest("GET", "/v4/domains/status", &res)
 	apiRequest.Query.Add("name", req.Name)
-	if h.teamId != "" {
-		apiRequest.Query.Add("teamId", h.teamId)
+	if h.teamid != "" {
+		apiRequest.Query.Add("teamId", h.teamid)
 	}
 	err = h.vercelClient.Call(apiRequest)
 
@@ -152,8 +152,8 @@ func (h *DomainHandler) CheckAvailability(req CheckAvailabilityRequest) (res Che
 func (h *DomainHandler) CheckPrice(req CheckPriceRequest) (res CheckPriceResponse, err error) {
 	apiRequest := api.NewApiRequest("GET", "/v4/domains/price", &res)
 	apiRequest.Query.Add("name", req.Name)
-	if h.teamId != "" {
-		apiRequest.Query.Add("teamId", h.teamId)
+	if h.teamid != "" {
+		apiRequest.Query.Add("teamId", h.teamid)
 	}
 	err = h.vercelClient.Call(apiRequest)
 
@@ -166,8 +166,8 @@ func (h *DomainHandler) CheckPrice(req CheckPriceRequest) (res CheckPriceRespons
 // Purchase the specified domain
 func (h *DomainHandler) Purchase(req PurchaseRequest) (res PurchaseResponse, err error) {
 	apiRequest := api.NewApiRequest("POST", "/v4/domains/buy", &res)
-	if h.teamId != "" {
-		apiRequest.Query.Add("teamId", h.teamId)
+	if h.teamid != "" {
+		apiRequest.Query.Add("teamId", h.teamid)
 	}
 	err = h.vercelClient.Call(apiRequest)
 

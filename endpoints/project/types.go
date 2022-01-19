@@ -2,7 +2,7 @@ package project
 
 // Project houses all the information vercel offers about a project via their api
 type Project struct {
-	AccountID string `json:"accountId"`
+	Accountid string `json:"accountid"`
 	Alias     []struct {
 		ConfiguredBy        string `json:"configuredBy"`
 		ConfiguredChangedAt int64  `json:"configuredChangedAt"`
@@ -14,37 +14,37 @@ type Project struct {
 			CreatedAt     int64         `json:"createdAt"`
 			CreatedIn     string        `json:"createdIn"`
 			Creator       struct {
-				UID         string `json:"uid"`
+				Uid         string `json:"uid"`
 				Email       string `json:"email"`
 				Username    string `json:"username"`
 				GithubLogin string `json:"githubLogin"`
 			} `json:"creator"`
 			DeploymentHostname string `json:"deploymentHostname"`
 			Forced             bool   `json:"forced"`
-			ID                 string `json:"id"`
+			Id                 string `json:"id"`
 			Meta               struct {
 				GithubCommitRef         string `json:"githubCommitRef"`
 				GithubRepo              string `json:"githubRepo"`
 				GithubOrg               string `json:"githubOrg"`
 				GithubCommitSha         string `json:"githubCommitSha"`
-				GithubRepoID            string `json:"githubRepoId"`
+				GithubRepoid            string `json:"githubRepoid"`
 				GithubCommitMessage     string `json:"githubCommitMessage"`
 				GithubCommitAuthorLogin string `json:"githubCommitAuthorLogin"`
 				GithubDeployment        string `json:"githubDeployment"`
 				GithubCommitOrg         string `json:"githubCommitOrg"`
 				GithubCommitAuthorName  string `json:"githubCommitAuthorName"`
 				GithubCommitRepo        string `json:"githubCommitRepo"`
-				GithubCommitRepoID      string `json:"githubCommitRepoId"`
+				GithubCommitRepoid      string `json:"githubCommitRepoid"`
 			} `json:"meta"`
 			Name       string `json:"name"`
 			Plan       string `json:"plan"`
 			Private    bool   `json:"private"`
 			ReadyState string `json:"readyState"`
 			Target     string `json:"target"`
-			TeamID     string `json:"teamId"`
+			Teamid     string `json:"teamid"`
 			Type       string `json:"type"`
 			URL        string `json:"url"`
-			UserID     string `json:"userId"`
+			Userid     string `json:"userid"`
 			WithCache  bool   `json:"withCache"`
 		} `json:"deployment"`
 		Domain      string `json:"domain"`
@@ -52,7 +52,7 @@ type Project struct {
 		Target      string `json:"target"`
 	} `json:"alias"`
 	Analytics struct {
-		ID         string `json:"id"`
+		Id         string `json:"id"`
 		EnabledAt  int64  `json:"enabledAt"`
 		DisabledAt int64  `json:"disabledAt"`
 		CanceledAt int64  `json:"canceledAt"`
@@ -64,16 +64,16 @@ type Project struct {
 	DirectoryListing     bool   `json:"directoryListing"`
 	Env                  []struct {
 		Type            string      `json:"type"`
-		ID              string      `json:"id"`
+		Id              string      `json:"id"`
 		Key             string      `json:"key"`
 		Value           string      `json:"value"`
 		Target          []string    `json:"target"`
-		ConfigurationID interface{} `json:"configurationId"`
+		Configurationid interface{} `json:"configurationid"`
 		UpdatedAt       int64       `json:"updatedAt"`
 		CreatedAt       int64       `json:"createdAt"`
 	} `json:"env"`
 	Framework                       string `json:"framework"`
-	ID                              string `json:"id"`
+	Id                              string `json:"id"`
 	InstallCommand                  string `json:"installCommand"`
 	Name                            string `json:"name"`
 	NodeVersion                     string `json:"nodeVersion"`
@@ -86,9 +86,9 @@ type Project struct {
 	Link                            struct {
 		Type             string        `json:"type"`
 		Repo             string        `json:"repo"`
-		RepoID           int64         `json:"repoId"`
+		Repoid           int64         `json:"repoid"`
 		Org              string        `json:"org"`
-		GitCredentialID  string        `json:"gitCredentialId"`
+		GitCredentialid  string        `json:"gitCredentialid"`
 		CreatedAt        int64         `json:"createdAt"`
 		UpdatedAt        int64         `json:"updatedAt"`
 		Sourceless       bool          `json:"sourceless"`
@@ -106,14 +106,14 @@ type Project struct {
 		CreatedAt     int64         `json:"createdAt"`
 		CreatedIn     string        `json:"createdIn"`
 		Creator       struct {
-			UID         string `json:"uid"`
+			Uid         string `json:"uid"`
 			Email       string `json:"email"`
 			Username    string `json:"username"`
 			GithubLogin string `json:"githubLogin"`
 		} `json:"creator"`
 		DeploymentHostname string `json:"deploymentHostname"`
 		Forced             bool   `json:"forced"`
-		ID                 string `json:"id"`
+		Id                 string `json:"id"`
 		Meta               struct {
 			GithubCommitRef         string `json:"githubCommitRef"`
 			GithubRepo              string `json:"githubRepo"`
@@ -121,22 +121,22 @@ type Project struct {
 			GithubCommitSha         string `json:"githubCommitSha"`
 			GithubCommitAuthorLogin string `json:"githubCommitAuthorLogin"`
 			GithubCommitMessage     string `json:"githubCommitMessage"`
-			GithubRepoID            string `json:"githubRepoId"`
+			GithubRepoid            string `json:"githubRepoid"`
 			GithubDeployment        string `json:"githubDeployment"`
 			GithubCommitOrg         string `json:"githubCommitOrg"`
 			GithubCommitAuthorName  string `json:"githubCommitAuthorName"`
 			GithubCommitRepo        string `json:"githubCommitRepo"`
-			GithubCommitRepoID      string `json:"githubCommitRepoId"`
+			GithubCommitRepoid      string `json:"githubCommitRepoid"`
 		} `json:"meta"`
 		Name       string      `json:"name"`
 		Plan       string      `json:"plan"`
 		Private    bool        `json:"private"`
 		ReadyState string      `json:"readyState"`
 		Target     interface{} `json:"target"`
-		TeamID     string      `json:"teamId"`
+		Teamid     string      `json:"teamid"`
 		Type       string      `json:"type"`
 		URL        string      `json:"url"`
-		UserID     string      `json:"userId"`
+		Userid     string      `json:"userid"`
 		WithCache  bool        `json:"withCache"`
 	} `json:"latestDeployments"`
 	Targets struct {
@@ -147,37 +147,37 @@ type Project struct {
 			CreatedAt     int64         `json:"createdAt"`
 			CreatedIn     string        `json:"createdIn"`
 			Creator       struct {
-				UID         string `json:"uid"`
+				Uid         string `json:"uid"`
 				Email       string `json:"email"`
 				Username    string `json:"username"`
 				GithubLogin string `json:"githubLogin"`
 			} `json:"creator"`
 			DeploymentHostname string `json:"deploymentHostname"`
 			Forced             bool   `json:"forced"`
-			ID                 string `json:"id"`
+			Id                 string `json:"id"`
 			Meta               struct {
 				GithubCommitRef         string `json:"githubCommitRef"`
 				GithubRepo              string `json:"githubRepo"`
 				GithubOrg               string `json:"githubOrg"`
 				GithubCommitSha         string `json:"githubCommitSha"`
-				GithubRepoID            string `json:"githubRepoId"`
+				GithubRepoid            string `json:"githubRepoid"`
 				GithubCommitMessage     string `json:"githubCommitMessage"`
 				GithubCommitAuthorLogin string `json:"githubCommitAuthorLogin"`
 				GithubDeployment        string `json:"githubDeployment"`
 				GithubCommitOrg         string `json:"githubCommitOrg"`
 				GithubCommitAuthorName  string `json:"githubCommitAuthorName"`
 				GithubCommitRepo        string `json:"githubCommitRepo"`
-				GithubCommitRepoID      string `json:"githubCommitRepoId"`
+				GithubCommitRepoid      string `json:"githubCommitRepoid"`
 			} `json:"meta"`
 			Name       string `json:"name"`
 			Plan       string `json:"plan"`
 			Private    bool   `json:"private"`
 			ReadyState string `json:"readyState"`
 			Target     string `json:"target"`
-			TeamID     string `json:"teamId"`
+			Teamid     string `json:"teamid"`
 			Type       string `json:"type"`
 			URL        string `json:"url"`
-			UserID     string `json:"userId"`
+			Userid     string `json:"userid"`
 			WithCache  bool   `json:"withCache"`
 		} `json:"production"`
 	} `json:"targets"`
@@ -192,12 +192,13 @@ type CreateProjectRequest struct {
 	// is defined, any pushes to the specified connected Git Repository
 	// will be automatically deployed.
 	// Required: No
-	GitRepository struct {
-		Type string `json:"type"`
-		Repo string `json:"repo"`
-	} `json:"gitRepository,omitempty"`
+	GitRepository *GitRepository `json:"gitRepository,omitempty"`
 
 	UpdateProjectRequest
+}
+type GitRepository struct {
+	Type string `json:"type,omitempty"`
+	Repo string `json:"repo,omitempty"`
 }
 type CreateProjectResponse struct {
 	Project
@@ -222,18 +223,6 @@ type ListProjectsRequest struct {
 }
 type ListProjectsResponse struct {
 	Projects []Project `json:"projects"`
-}
-
-// Get the information for a specific project by passing either the project id
-// or name in the URL.
-type GetProjectRequest struct {
-	// The unique Project identifier.
-	// Required: No
-	Id string `json:"id,omitempty"`
-
-	// The project name.
-	// Required: No
-	Name string `json:"name,omitempty"`
 }
 
 type GetProjectResponse struct {
@@ -287,19 +276,9 @@ type UpdateProjectResponse struct {
 	Project
 }
 
-type RemoveProjectRequest struct {
-	// The unique Project identifier.
-	// Required: No
-	Id string `json:"id,omitempty"`
-
-	// The project name.
-	// Required: No
-	Name string `json:"name,omitempty"`
-}
-
 // If the request is successful, you will receive a 204 HTTP Status code in the
 // response.
-type RemoveProjectResponse struct{}
+type DeleteProjectResponse struct{}
 
 type GetEnvironmentVariablesRequest struct {
 
@@ -313,8 +292,8 @@ type GetEnvironmentVariablesResponse struct {
 		Value           string      `json:"value"`
 		Target          []string    `json:"target"`
 		GitBranch       string      `json:"gitBranch,omitempty"`
-		ConfigurationID interface{} `json:"configurationId"`
-		ID              string      `json:"id"`
+		Configurationid interface{} `json:"configurationid"`
+		Id              string      `json:"id"`
 		Key             string      `json:"key"`
 		CreatedAt       int64       `json:"createdAt"`
 		UpdatedAt       int64       `json:"updatedAt"`
@@ -334,7 +313,7 @@ type CreateEnvironmentVariableRequest struct {
 
 	// If the type is plain or encrypted, a string representing the value of the
 	// Environment Variable.
-	// If the type is secret, the secret ID of the secret attached to the
+	// If the type is secret, the secret id of the secret attached to the
 	// Environment Variable.
 	// If the type is system, the name of the System Environment Variable.
 	// Required: Yes
@@ -351,17 +330,18 @@ type CreateEnvironmentVariableRequest struct {
 }
 type CreateEnvironmentVariableResponse struct {
 	Type            string   `json:"type"`
-	ID              string   `json:"id"`
+	Id              string   `json:"id"`
 	Key             string   `json:"key"`
 	Value           string   `json:"value"`
 	Target          []string `json:"target"`
-	ConfigurationID string   `json:"configurationId,omitempty"`
+	Configurationid string   `json:"configurationid,omitempty"`
 	GitBranch       string   `json:"gitBranch,omitempty"`
 	UpdatedAt       int64    `json:"updatedAt"`
 	CreatedAt       int64    `json:"createdAt"`
 }
 
-type EditEnvironmentVariableRequest struct {
+type UpdateEnvironmentVariableRequest struct {
+	Envid string `json:"-"`
 	// The type can be plain, encrypted, secret, or system.
 	// Required: No
 	Type string `json:"type,omitempty"`
@@ -382,13 +362,13 @@ type EditEnvironmentVariableRequest struct {
 	// Required: No
 	GitBranch string `json:"gitBranch,omitempty"`
 }
-type EditEnvironmentVariableResponse struct {
+type UpdateEnvironmentVariableResponse struct {
 	Type            string   `json:"type"`
-	ID              string   `json:"id"`
+	Id              string   `json:"id"`
 	Key             string   `json:"key"`
 	Value           string   `json:"value"`
 	Target          []string `json:"target"`
-	ConfigurationID string   `json:"configurationId,omitempty"`
+	Configurationid string   `json:"configurationid,omitempty"`
 	GitBranch       string   `json:"gitBranch,omitempty"`
 	UpdatedAt       int64    `json:"updatedAt"`
 	CreatedAt       int64    `json:"createdAt"`
@@ -397,28 +377,18 @@ type EditEnvironmentVariableResponse struct {
 type DeleteEnvironmentVariableRequest struct {
 	// Required: Yes
 	// The unique Project identifier.
-	ProjectId string `json:"projectId"`
+	Projectid string
 
 	// Required: Yes
 	// The unique Environment Variable identifier.
-	EnvId string `json:"envId"`
+	Envid string
 }
-type DeleteEnvironmentVariableResponse struct {
-	Type            string   `json:"type"`
-	ID              string   `json:"id"`
-	Key             string   `json:"key"`
-	Value           string   `json:"value"`
-	Target          []string `json:"target"`
-	ConfigurationID string   `json:"configurationId,omitempty"`
-	GitBranch       string   `json:"gitBranch,omitempty"`
-	UpdatedAt       int64    `json:"updatedAt"`
-	CreatedAt       int64    `json:"createdAt"`
-}
+type DeleteEnvironmentVariableResponse struct{}
 
 type AddDomainRequest struct {
 	// The name of the production domain.
 	// Required: Yes
-	Name string `json:"string"`
+	Name string `json:"name"`
 
 	// Target destination domain for redirect.
 	// Required: No
@@ -432,36 +402,72 @@ type AddDomainRequest struct {
 	// Required: No
 	GitBranch string `json:"gitBranch,omitempty"`
 }
-type AddDomainResponse struct {
-	Name      string `json:"name"`
-	ProjectID string `json:"projectId"`
-	CreatedAt int64  `json:"createdAt"`
-	UpdatedAt int64  `json:"updatedAt"`
+
+type UpdateDomainRequest struct {
+	// The name of the production domain.
+	// Required: Yes
+	Name string `json:"-"`
+
+	// Target destination domain for redirect.
+	// Required: No
+	Redirect string `json:"redirect,omitempty"`
+
+	// The redirect status code (301, 302, 307, 308).
+	// Required: No
+	RedirectStatusCode int64 `json:"redirectStatusCode,omitempty"`
+
+	// Git branch for the domain to be auto assigned to. The Project's production branch is the default (null).
+	// Required: No
+	GitBranch string `json:"gitBranch,omitempty"`
+}
+type Domain struct {
+	ProjectId          string `json:"projectId"`
+	Name               string `json:"name"`
+	ApexName           string `json:"apexName"`
+	Redirect           string `json:"redirect,omitempty"`
+	RedirectStatusCode int    `json:"redirectStatusCode,omitempty"`
+	GitBranch          string `json:"gitBranch,omitempty"`
+	UpdatedAt          int    `json:"updatedAt,omitempty"`
+	CreatedAt          int    `json:"createdAt,omitempty"`
 }
 
 type ListDomainsRequest struct {
+
+	// Filters domains based on specific branch.
+	// Required: No
+	GitBranch string `json:"gitBranch,omitempty"`
+
+	// Maximum number of domains to list from a request (max 100).
+	// Required: No
+	Limit int `json:"limit,omitempty"`
+
+	// Filters only production domains when set to true.
+	// Required: No
+	Production bool `json:"production,omitempty"`
+
+	// Excludes redirect project domains when "false". Includes redirect project
+	// domains when "true" (default).
+	// Required: No
+	Redirects bool `json:"redirects,omitempty"`
+
+	// Get domains created after this JavaScript timestamp.
+	// Required: No
+	Since int `json:"since,omitempty"`
+
+	// Get domains created before this JavaScript timestamp.
+	// Required: No
+	Until int `json:"until,omitempty"`
 }
 type ListDomainsResponse struct {
-	Domains []struct {
-		Name      string `json:"name"`
-		ProjectID string `json:"projectId"`
-		UpdatedAt int64  `json:"updatedAt"`
-		CreatedAt int64  `json:"createdAt"`
-	} `json:"domains"`
+	Domains    []Domain `json:"domains"`
 	Pagination struct {
-		Count int   `json:"count"`
-		Next  int64 `json:"next"`
-		Prev  int64 `json:"prev"`
+		Count int `json:"count"`
+		Next  int `json:"next"`
+		Prev  int `json:"prev"`
 	} `json:"pagination"`
 }
 
 type GetDomainRequest struct{}
-type GetDomainResponse struct {
-	Name      string `json:"name"`
-	ProjectID string `json:"projectId"`
-	UpdatedAt int64  `json:"updatedAt"`
-	CreatedAt int64  `json:"createdAt"`
-}
 
 type SetRedirectRequest struct {
 	// Target destination domain for redirect.
@@ -471,7 +477,7 @@ type SetRedirectRequest struct {
 type SetRedirectResponse struct {
 	Name      string `json:"name"`
 	Redirect  string `json:"redirect"`
-	ProjectID string `json:"projectId"`
+	Projectid string `json:"projectId"`
 	UpdatedAt int64  `json:"updatedAt"`
 	CreatedAt int64  `json:"createdAt"`
 }

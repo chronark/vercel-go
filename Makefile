@@ -1,7 +1,10 @@
-test:
-	@go get github.com/mfridman/tparse
+include .env
+export
 
-	go test ./... -v -race -covermode=atomic  -json | tparse -all -dump
+test:
+	@go get -d github.com/mfridman/tparse
+
+	go test ./... -v -race -count=1 -covermode=atomic  -json | ~/go/bin/tparse -all -dump
 
 
 fmt:

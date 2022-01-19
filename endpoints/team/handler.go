@@ -2,6 +2,7 @@ package team
 
 import (
 	"fmt"
+
 	"github.com/chronark/vercel-go/api"
 )
 
@@ -28,7 +29,7 @@ func (h *TeamHandler) Get(req GetTeamRequest) (res GetTeamResponse, err error) {
 
 		apiRequest.Query.Add("slug", req.Slug)
 	} else {
-		return GetTeamResponse{}, fmt.Errorf("Unable to fetch team: Either `Id` or `Slug` must be defined")
+		return GetTeamResponse{}, fmt.Errorf("Unable to fetch team: Either `id` or `Slug` must be defined")
 	}
 
 	err = h.vercelClient.Call(apiRequest)
